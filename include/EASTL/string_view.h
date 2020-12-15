@@ -625,6 +625,13 @@ namespace eastl
 		EA_RESTORE_VC_WARNING() // warning: 4455
 	#endif
 
+  template<class Traits>
+  std::basic_ostream<char, Traits>&
+  operator<<(std::basic_ostream<char, Traits>& output, const eastl::string_view &str)
+  {
+    output.write(str.data(), str.size());
+    return output;
+  }
 } // namespace eastl
 
 EA_RESTORE_VC_WARNING()

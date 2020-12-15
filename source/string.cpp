@@ -446,6 +446,17 @@ namespace eastl
 	}
 
 
+std::stringstream&
+operator>>(std::stringstream& input, string& str)
+{
+  std::streambuf* pbuf = input.rdbuf();
+  std::streamsize size = pbuf->pubseekoff(0, input.end);
+  pbuf->pubseekoff(0, input.beg); // rewind
+  str.resize(size);
+  pbuf->sgetn(str.data(), size);
+  input.setstate(input.eofbit);
+  return input;
+}
 
 } // namespace eastl
 

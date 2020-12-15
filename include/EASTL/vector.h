@@ -34,6 +34,7 @@
 
 
 #include <EASTL/internal/config.h>
+#include <EASTL/internal/GetTypeName.h>
 #include <EASTL/allocator.h>
 #include <EASTL/type_traits.h>
 #include <EASTL/iterator.h>
@@ -2045,6 +2046,25 @@ namespace eastl
 		c.erase(eastl::remove_if(c.begin(), c.end(), predicate), c.end());
 	}
 
+  template <
+    typename T,
+    typename Allocator,
+    typename OStream,
+    typename = eastl::enable_if_t<eastl::is_base_of_v<std::ostream, OStream>>
+  >
+  OStream&
+  operator<<(OStream &output, const vector<T, Allocator> &c)
+  {
+    output << "eastl::vector<" << GetTypeName<T>() << "> {";
+    for (ssize_t i = 0; i + 1 < c.size(); ++ i) {
+      output << c[i] << ", ";
+    }
+    if (c.size() > 0) {
+      output << c[c.size() - 1];
+    }
+    output << "}";
+    return output;
+  }
 } // namespace eastl
 
 

@@ -110,6 +110,7 @@ EA_DISABLE_GCC_WARNING(-Wtype-limits)
 EA_RESTORE_GCC_WARNING()
 
 #include <string.h> // strlen, etc.
+#include <sstream> // operator>>
 
 #if EASTL_EXCEPTIONS_ENABLED
 	#include <stdexcept> // std::out_of_range, std::length_error.
@@ -4091,6 +4092,17 @@ namespace eastl
 		// Erases all elements that satisfy the predicate pred from the container.
 		c.erase(eastl::remove_if(c.begin(), c.end(), predicate), c.end());
 	}
+
+  template<class Traits>
+  std::basic_ostream<char, Traits>&
+  operator<<(std::basic_ostream<char, Traits>& output, const eastl::string& str)
+  {
+    output.write(str.data(), str.size());
+    return output;
+  }
+
+  std::stringstream&
+  operator>>(std::stringstream& input, string& str);
 } // namespace eastl
 
 
